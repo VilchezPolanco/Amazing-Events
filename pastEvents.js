@@ -28,13 +28,11 @@ function llenarTarjetas(listaEventos, elemento) {
 
 // Compara fechas y usa la funcion llenarTarjetas para imprimirlas.
 function filtroFecha(lista) {
-    pastEvents = [];
-    for (let llave of lista.events) {
-        if (llave.date < lista.currentDate) {
-            pastEvents.push(llave);
-        }
-    }
-    llenarTarjetas(pastEvents, $caja3);
+    let template = "";
+    return lista.date < data.currentDate
 }
+const pastEvents = data.events.filter((filtroFecha))
+
+llenarTarjetas(pastEvents, $caja3);
 
 filtroFecha(data);
