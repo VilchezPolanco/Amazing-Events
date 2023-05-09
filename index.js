@@ -18,8 +18,8 @@ function generarTarjeta(listaFinal) {
 
 function llenarTarjetas(listaEventos, elemento) {
     let template = '';
-    for (let i of listaEventos.events) {
-        template += generarTarjeta(i);
+    for (let evento of listaEventos.events) {
+        template += generarTarjeta(evento);
     }
     elemento.innerHTML = template;
 }

@@ -7,6 +7,7 @@ function generarTarjeta(listaFinal) {
         <img style="height: 9rem;" src="${listaFinal.image}" class="card-img-top" alt="img of ${listaFinal.name}">
             <div class="d-flex flex-column justify-content-between card-body" style="height: 13rem">
                 <h5 class="card-title">${listaFinal.name}</h5>
+                <h5 class="card-title">${listaFinal.date}</h5>
                 <p class="card-text" >${listaFinal.description}</p>
                 <div class="d-flex justify-content-around align-items-center">
                     <p class="m-0">Price: $${listaFinal.price}</p>
@@ -20,20 +21,21 @@ function generarTarjeta(listaFinal) {
 // Toma los datos de la lista y los asigna al innerHTML de cada elemento
 function llenarTarjetas(listaEventos, elemento) {
     let template = '';
-    for (let i of listaEventos) {
-        template += generarTarjeta(i);
+    for (let evento of listaEventos) {
+        template += generarTarjeta(evento);
     }
     elemento.innerHTML = template;
 }
 
 // Compara fechas y usa la funcion llenarTarjetas para imprimirlas.
 function filtroFecha(lista) {
-    let template = "";
-    return lista.date > data.currentDate
+    upcomingEvents = [];
+    for (let fecha of lista.events) {
+        if (fecha.date > lista.currentDate) {
+            upcomingEvents.push(fecha);
+        }
+    }
+    llenarTarjetas(upcomingEvents, $caja2);
 }
-
-const upcomingEvents = data.events.filter((filtroFecha))
-
-llenarTarjetas(upcomingEvents, $caja2);
 
 filtroFecha(data);
