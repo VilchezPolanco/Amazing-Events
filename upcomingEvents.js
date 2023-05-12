@@ -39,7 +39,7 @@ function generarTarjeta(listaFinal) {
                     <p class="card-text" >${act.description}</p>
                     <div class="d-flex justify-content-around align-items-center">
                         <p class="m-0">Price: $${act.price}</p>
-                        <a href="./details.html" class="btn btn-primary">More Info</a>
+                        <a href="./details.html?_id=${act._id}" class="btn btn-primary">More Info</a>
                     </div>
                 </div>
         </div>
