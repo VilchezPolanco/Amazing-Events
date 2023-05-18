@@ -1,21 +1,39 @@
 const $caja3 = document.getElementById('content-past-cards');
 const $checkbox = document.getElementById ("contenedor-checkbox")
 const $inputSearch = document.getElementById ("search")
-const info = data.events
+let info 
+let pastEvents
 
 
-// Compara fechas y usa la funcion llenarTarjetas para imprimirlas.
-function filtroFecha (lista){
-    return lista.date < data.currentDate
- }
- let pastEvents = data.events.filter((filtroFecha))
- //llenarTarjetas(pastEvents, $caja3);
+fetch (`https://mindhub-xj03.onrender.com/api/amazing`)
+.then (res => res.json())  //la respuesta la paso a json devuelve promesa
+.then (data => {    //en el metodo then() ejecuto la funcion callback 
+
+    info = data
+
+    // Compara fechas y usa la funcion llenarTarjetas para imprimirlas.
+    function filtroFecha (lista){
+        return lista.date < data.currentDate
+     }
+     pastEvents = info.events.filter((filtroFecha))
+
+     $caja3.innerHTML = generarTarjeta (pastEvents)
+
+     /*Filtra por categoria */
+     const category = info.events.map (evento => evento.category) //me devuelve la categoria
+     const setInfo = new Set (category)  //no me da valores duplicados y me devuelve el primero
+     const arrayCategory = Array.from (setInfo) //lo vuelve a hacer array
+
+     const templateCategory = arrayCategory.reduce(funcionReduce, '')
+     $checkbox.innerHTML = templateCategory;
+
+})
+.catch(err => console.log (err))
+
+
 
 
 /*Filtra por categoria */
-const category = info.map (evento => evento.category) //me devuelve la categoria
-const setInfo = new Set (category)  //no me da valores duplicados y me devuelve el primero
-const arrayCategory = Array.from (setInfo) //lo vuelve a hacer array
 
 
 //creacion template de checkbox por categoria
@@ -25,8 +43,8 @@ const funcionReduce = (acumulador,elementoActual, indice, array) =>{
                             <label class="form-check-label" for="${elementoActual} - ${indice}"> ${elementoActual}</label>
                         </div>`
 }
-const templateCategory = arrayCategory.reduce(funcionReduce, '')
-$checkbox.innerHTML = templateCategory;
+/* const templateCategory = arrayCategory.reduce(funcionReduce, '')
+$checkbox.innerHTML = templateCategory;                       se ejecuta en esta linea cuando tiene en archivo data y no usa apis*/
 
 /*Creacion de tarjeta */
 function generarTarjeta(listaFinal) {
@@ -46,7 +64,7 @@ function generarTarjeta(listaFinal) {
     `}, '' )
 }
 
-$caja3.innerHTML = generarTarjeta (pastEvents)
+/*$caja3.innerHTML = generarTarjeta (pastEvents)         se ejecuta en esta linea cuando tiene en archivo data y no usa apis*/
 
 /*escuchador esperando el evento change del checkbox */
 $checkbox.addEventListener( 'change', () => { filtroSearch ()

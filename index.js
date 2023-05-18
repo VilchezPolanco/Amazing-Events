@@ -1,12 +1,28 @@
-const $caja = document.getElementById('content-cards');
+const $caja = document.getElementById("content-cards");
 const $checkbox = document.getElementById ("contenedor-checkbox")
 const $inputSearch = document.getElementById ("search")
-const info = data.events
+let info 
 
-/*Filtra por categoria */
-const category = info.map (evento => evento.category) //me devuelve la categoria
-const setInfo = new Set (category)  //no me da valores duplicados y me devuelve el primero
-const arrayCategory = Array.from (setInfo) //lo vuelve a hacer array
+
+fetch (`https://mindhub-xj03.onrender.com/api/amazing`)
+.then (res => res.json())
+.then (data =>{
+
+    info = data
+
+    $caja.innerHTML = generarTarjeta (info.events)
+    
+    /*Filtra por categoria */
+    const category = info.events.map (evento => evento.category) //me devuelve la categoria
+    const setInfo = new Set (category)  //no me da valores duplicados y me devuelve el primero
+    const arrayCategory = Array.from (setInfo) //lo vuelve a hacer array
+
+    const templateCategory = arrayCategory.reduce(funcionReduce, '')
+    $checkbox.innerHTML = templateCategory;
+})
+.catch(err => console.log (err))
+
+
 
 
 //creacion template de checkbox por categoria
@@ -15,9 +31,10 @@ const funcionReduce = (acumulador,elementoActual, indice, array) =>{
                             <input class="form-check-input" type="checkbox" id="${elementoActual} - ${indice}" value="${elementoActual}">
                             <label class="form-check-label" for="${elementoActual} - ${indice}"> ${elementoActual}</label>
                         </div>`
-}
-const templateCategory = arrayCategory.reduce(funcionReduce, '')
-$checkbox.innerHTML = templateCategory;
+} // funcion que crea un frgmentos de html por check y se insertan
+
+/*const templateCategory = arrayCategory.reduce(funcionReduce, '')
+$checkbox.innerHTML = templateCategory;             estas lineas de codigo se usaban con el archivo data.js*/
 
 /*Creacion de tarjeta */
 function generarTarjeta(listaFinal) {
@@ -37,7 +54,7 @@ function generarTarjeta(listaFinal) {
     `}, '' )
 }
 
-$caja.innerHTML = generarTarjeta (info)
+/*$caja.innerHTML = generarTarjeta (info)           estas lineas de codigo se usaban con el archivo data.js*/
 
 /*escuchador esperando el evento change del checkbox */
 $checkbox.addEventListener( 'change', () => { filtroSearch ()
@@ -64,7 +81,7 @@ function busquedaNombre (datos, category){
 
 function filtroSearch (){
     const checkboxChange = Array.from (document.querySelectorAll (`input[type="checkbox"]:checked`)).map ( check => check.value)
-    let filtrarPorBusqueda = busquedaNombre (info, $inputSearch.value )
+    let filtrarPorBusqueda = busquedaNombre (info.events, $inputSearch.value )
     let filtrarCheck = filtrarEventos (filtrarPorBusqueda, checkboxChange)
     $caja.innerHTML = generarTarjeta (filtrarCheck)
 }
